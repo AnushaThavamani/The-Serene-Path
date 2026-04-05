@@ -1,0 +1,314 @@
+.pb-root { animation: contentIn 0.5s ease; }
+.pb-header { margin-bottom: 8px; }
+
+.pb-date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: var(--er-surface);
+  border: 1px solid var(--er-border);
+  border-radius: 50px;
+  font-size: 12px;
+  color: var(--er-text-muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 32px;
+}
+
+.pb-section { margin-bottom: 28px; }
+
+.pb-section-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--er-text-muted);
+}
+
+.pb-duration-tag {
+  font-size: 12px;
+  color: var(--er-text-muted);
+}
+
+/* Affirmation card */
+.pb-affirmation-card {
+  position: relative;
+  background: var(--er-surface);
+  border: 1px solid var(--er-border);
+  border-radius: var(--er-radius-lg);
+  padding: 36px 32px;
+  overflow: hidden;
+  text-align: center;
+  transition: border-color 0.5s;
+}
+
+.pb-affirmation-card.pb-affirmed { border-color: var(--pb-color); }
+
+.pb-affirmation-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, var(--pb-glow), transparent 60%);
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+
+.pb-affirmation-icon {
+  font-size: 36px;
+  color: var(--pb-color);
+  margin-bottom: 20px;
+  display: block;
+  position: relative;
+  z-index: 1;
+  animation: heroIconFloat 5s ease-in-out infinite;
+}
+
+.pb-affirmation-text {
+  font-family: var(--er-font-display);
+  font-size: 22px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--er-text);
+  line-height: 1.5;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pb-affirm-btn { margin: 0 auto 0; position: relative; z-index: 1; }
+
+.pb-affirmed-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--er-text-muted);
+  position: relative;
+  z-index: 1;
+  animation: contentIn 0.4s ease;
+}
+
+/* Browse toggle */
+.pb-browse-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--er-surface);
+  border: 1px solid var(--er-border);
+  border-radius: 14px;
+  cursor: pointer;
+  font-family: var(--er-font-body);
+  font-size: 14px;
+  color: var(--er-text-soft);
+  transition: all 0.3s;
+}
+.pb-browse-toggle:hover { background: var(--er-surface-2); color: var(--er-text); }
+
+.pb-toggle-arrow { transition: transform 0.3s; font-size: 16px; }
+.pb-toggle-arrow--open { transform: rotate(180deg); }
+
+.pb-all-affirmations {
+  margin-top: 12px;
+  background: var(--er-surface);
+  border: 1px solid var(--er-border);
+  border-radius: 16px;
+  overflow: hidden;
+  animation: contentIn 0.4s ease;
+}
+
+.pb-themes {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--er-border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.pb-themes::-webkit-scrollbar { display: none; }
+
+.pb-theme-btn {
+  padding: 12px 18px;
+  background: none;
+  border: none;
+  font-family: var(--er-font-body);
+  font-size: 13px;
+  color: var(--er-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.pb-theme-btn:hover { color: var(--er-text); }
+.pb-theme-btn--active { color: var(--pb-color) !important; border-bottom-color: var(--pb-color); }
+
+.pb-affirmation-list {
+  padding: 8px 0;
+}
+
+.pb-aff-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--er-border);
+  transition: background 0.3s;
+}
+.pb-aff-item:last-child { border-bottom: none; }
+.pb-aff-item:hover { background: var(--er-surface-2); }
+
+.pb-aff-num {
+  width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--er-surface-3);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--er-text-muted);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pb-aff-text {
+  font-family: var(--er-font-display);
+  font-size: 15px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--er-text-soft);
+  line-height: 1.5;
+}
+
+/* Challenge card */
+.pb-challenge-card {
+  position: relative;
+  background: var(--er-surface);
+  border: 1px solid var(--er-border);
+  border-radius: var(--er-radius-lg);
+  padding: 28px;
+  overflow: hidden;
+}
+
+.pb-challenge-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top left, var(--pb-glow), transparent 60%);
+  pointer-events: none;
+}
+
+.pb-challenge-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.pb-challenge-icon {
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 12px;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.pb-challenge-title {
+  font-family: var(--er-font-display);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--er-text);
+}
+
+.pb-challenge-desc {
+  font-size: 14px;
+  color: var(--er-text-muted);
+  line-height: 1.75;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.pb-reflection { position: relative; z-index: 1; }
+
+.pb-reflection-input {
+  width: 100%;
+  background: var(--er-surface-3);
+  border: 1px solid var(--er-border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: var(--er-text);
+  font-family: var(--er-font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  resize: vertical;
+  margin-bottom: 14px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.pb-reflection-input:focus { border-color: var(--pb-color); }
+.pb-reflection-input::placeholder { color: var(--er-text-muted); }
+
+.pb-challenge-actions { display: flex; }
+
+.pb-challenge-done {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--er-text-muted);
+  position: relative;
+  z-index: 1;
+  animation: contentIn 0.4s ease;
+}
+
+/* Mini challenges */
+.pb-challenges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.pb-mini-challenge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--er-surface);
+  border: 1px solid var(--er-border);
+  border-radius: 14px;
+  transition: all 0.3s;
+}
+.pb-mini-challenge:hover { border-color: var(--pb-color); background: var(--er-surface-2); }
+
+.pb-mini-icon {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.pb-mini-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--er-text-soft);
+  line-height: 1.3;
+}
+
+.pb-mini-dur {
+  font-size: 11px;
+  color: var(--er-text-muted);
+  margin-top: 2px;
+}
+
+@media (max-width: 600px) {
+  .pb-affirmation-text { font-size: 18px; }
+  .pb-challenge-title { font-size: 18px; }
+}

@@ -1,0 +1,157 @@
+/* =============================================================================
+   NAVBAR - THE SERENE PATH
+   ============================================================================= */
+
+.glass-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  margin: 1.5rem auto 3rem;
+  width: fit-content;
+
+  background: rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 100px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.8);
+  position: relative;
+  z-index: 1000;
+}
+
+/* Base nav item */
+.nav-item {
+  text-decoration: none;
+  color: #1a1a1a;
+  font-weight: 600;
+  padding: 0.75rem 1.6rem;
+  border-radius: 50px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.92rem;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'Manrope', sans-serif;
+}
+
+.nav-item:hover {
+  background-color: #2F4F4F;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(47, 79, 79, 0.28);
+}
+
+.nav-item.active {
+  background-color: #2F4F4F;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 5px 20px rgba(47, 79, 79, 0.25);
+}
+
+/* Dropdown wrapper */
+.nav-dropdown-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Dropdown trigger — styled like nav-item */
+.dropdown-trigger {
+  text-decoration: none;
+  color: #1a1a1a;
+  font-weight: 600;
+  padding: 0.75rem 1.6rem;
+  border-radius: 50px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.92rem;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'Manrope', sans-serif;
+  background: none;
+  border: none;
+}
+
+.dropdown-trigger:hover,
+.nav-dropdown-wrapper:hover .dropdown-trigger {
+  background-color: #2F4F4F;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(47, 79, 79, 0.28);
+}
+
+/* Dropdown menu */
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(47, 79, 79, 0.1);
+  border-radius: 18px;
+  padding: 8px 0;
+
+  min-width: 200px;
+  width: max-content;
+
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 2000;
+
+  animation: dropFadeIn 0.2s ease-out;
+}
+
+@keyframes dropFadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Arrow tip */
+.nav-dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 6px 6px 6px;
+  border-style: solid;
+  border-color: transparent transparent rgba(255,255,255,0.97) transparent;
+}
+
+/* Dropdown links */
+.dropdown-link {
+  padding: 11px 20px;
+  text-decoration: none;
+  color: #333;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-family: 'Manrope', sans-serif;
+  display: block;
+}
+
+.dropdown-link:hover {
+  background-color: rgba(47, 79, 79, 0.08);
+  color: #2F4F4F;
+  padding-left: 26px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .glass-nav {
+    width: 95%;
+    padding: 0.5rem;
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
+
+  .nav-item {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.85rem;
+  }
+}

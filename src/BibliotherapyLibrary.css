@@ -1,0 +1,653 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap');
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --b2-sage: #6b8f71;
+  --b2-sage-soft: #e6f0e8;
+  --b2-sage-mid: #a8c5ab;
+  --b2-cream: #faf8f4;
+  --b2-sand: #eee5d8;
+  --b2-clay: #c4956a;
+  --b2-ink: #1f2521;
+  --b2-ink-soft: #667368;
+  --b2-white: #ffffff;
+  --b2-shadow: 0 24px 60px rgba(31, 37, 33, 0.12);
+}
+
+.biblio2-container {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(196, 149, 106, 0.12), transparent 28%),
+    radial-gradient(circle at 80% 14%, rgba(168, 197, 171, 0.28), transparent 24%),
+    linear-gradient(180deg, #f6f1e8 0%, #faf8f4 48%, #f5efe6 100%);
+  color: var(--b2-ink);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.biblio2-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+  background-size: 36px 36px;
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+.biblio2-ambient {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.biblio2-ambient-one {
+  top: 120px;
+  left: -80px;
+  width: 260px;
+  height: 260px;
+  background: rgba(232, 210, 188, 0.5);
+}
+
+.biblio2-ambient-two {
+  top: 360px;
+  right: -40px;
+  width: 320px;
+  height: 320px;
+  background: rgba(168, 197, 171, 0.24);
+}
+
+.biblio2-ambient-three {
+  bottom: 140px;
+  left: 18%;
+  width: 220px;
+  height: 220px;
+  background: rgba(107, 143, 113, 0.14);
+}
+
+.biblio2-header,
+.biblio2-main {
+  position: relative;
+  z-index: 1;
+}
+
+.biblio2-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 18px;
+  padding: 1.1rem 2rem;
+  border-bottom: 1px solid rgba(238, 229, 216, 0.72);
+  background: rgba(250, 248, 244, 0.78);
+  backdrop-filter: blur(18px);
+}
+
+.biblio2-back,
+.biblio2-primary-btn,
+.biblio2-link-btn,
+.biblio2-jump-btn {
+  cursor: pointer;
+}
+
+.biblio2-back {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: none;
+  color: var(--b2-ink-soft);
+  font-weight: 500;
+}
+
+.biblio2-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: left;
+}
+
+.biblio2-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #6b8f71, #8fb092);
+  color: white;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 14px 30px rgba(107, 143, 113, 0.24);
+}
+
+.biblio2-title-wrap h1,
+.biblio2-featured-copy h2,
+.biblio2-section-head h2,
+.biblio2-card h3,
+.biblio2-thought-card h3 {
+  font-family: 'Playfair Display', serif;
+}
+
+.biblio2-title-wrap h1 {
+  font-size: 1.55rem;
+  margin: 0;
+}
+
+.biblio2-title-wrap p {
+  margin: 2px 0 0;
+  font-size: 0.78rem;
+  color: var(--b2-sage);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.biblio2-search {
+  justify-self: end;
+  width: 340px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(238, 229, 216, 0.9);
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--b2-ink-soft);
+  box-shadow: 0 10px 30px rgba(31, 37, 33, 0.05);
+}
+
+.biblio2-search input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.biblio2-main {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 2rem 2rem 4rem;
+}
+
+.biblio2-featured-card,
+.biblio2-overview-card,
+.biblio2-card,
+.biblio2-thought-card,
+.biblio2-quote-panel {
+  border: 1px solid rgba(238, 229, 216, 0.72);
+  box-shadow: var(--b2-shadow);
+}
+
+.biblio2-featured-card {
+  display: grid;
+  grid-template-columns: 1.15fr 360px;
+  overflow: hidden;
+  border-radius: 30px;
+  background: linear-gradient(135deg, rgba(28, 39, 33, 0.96), rgba(43, 61, 49, 0.94));
+  min-height: 360px;
+}
+
+.biblio2-featured-copy {
+  padding: 2.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.biblio2-badge,
+.biblio2-type-tag {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.biblio2-badge {
+  background: rgba(107, 143, 113, 0.18);
+  color: var(--b2-sage-mid);
+}
+
+.biblio2-type-tag {
+  background: rgba(230, 240, 232, 0.95);
+  color: var(--b2-sage);
+}
+
+.biblio2-featured-copy h2 {
+  margin: 14px 0 8px;
+  font-size: 2.8rem;
+  line-height: 1.06;
+  color: #f5f0e8;
+}
+
+.biblio2-featured-copy h3 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(245, 240, 232, 0.82);
+}
+
+.biblio2-featured-copy p,
+.biblio2-card h4,
+.biblio2-excerpt,
+.biblio2-section-head p,
+.biblio2-quote-copy p {
+  line-height: 1.7;
+}
+
+.biblio2-featured-copy p {
+  color: rgba(245, 240, 232, 0.74);
+}
+
+.biblio2-featured-meta {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  color: rgba(245, 240, 232, 0.65);
+  font-size: 0.88rem;
+}
+
+.biblio2-primary-btn {
+  width: fit-content;
+  margin-top: 18px;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 22px;
+  background: linear-gradient(135deg, #6b8f71, #80a483);
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 16px 34px rgba(107, 143, 113, 0.28);
+}
+
+.biblio2-primary-btn-small {
+  padding: 10px 18px;
+  font-size: 0.92rem;
+}
+
+.biblio2-featured-art,
+.biblio2-thought-card,
+.biblio2-quote-panel {
+  position: relative;
+}
+
+.biblio2-featured-art img,
+.biblio2-card-image img,
+.biblio2-thought-card img,
+.biblio2-quote-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.biblio2-featured-overlay,
+.biblio2-thought-overlay,
+.biblio2-quote-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.biblio2-featured-overlay {
+  background:
+    linear-gradient(180deg, rgba(17, 28, 20, 0.1), rgba(17, 28, 20, 0.52)),
+    radial-gradient(circle at 65% 30%, rgba(255, 255, 255, 0.18), transparent 34%);
+}
+
+.biblio2-overview {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 1.5rem;
+}
+
+.biblio2-overview-card,
+.biblio2-card {
+  background: rgba(255, 255, 255, 0.84);
+  backdrop-filter: blur(8px);
+}
+
+.biblio2-overview-card {
+  border-radius: 20px;
+  padding: 1.2rem 1.1rem;
+}
+
+.biblio2-overview-card span,
+.biblio2-card-meta,
+.biblio2-card-note,
+.biblio2-time,
+.biblio2-count,
+.biblio2-quote-copy span {
+  color: var(--b2-ink-soft);
+}
+
+.biblio2-overview-card strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 1.85rem;
+}
+
+.biblio2-jump-nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 1.2rem;
+}
+
+.biblio2-jump-btn,
+.biblio2-filter-pill {
+  border: 1px solid rgba(238, 229, 216, 0.95);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--b2-ink-soft);
+  border-radius: 999px;
+  padding: 10px 16px;
+}
+
+.biblio2-shelf,
+.biblio2-thoughts,
+.biblio2-quote-gallery {
+  margin-top: 2.2rem;
+}
+
+.biblio2-section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.biblio2-section-head h2 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.biblio2-shelf-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(310px, 360px);
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-snap-type: x proximity;
+}
+
+.biblio2-shelf-row::-webkit-scrollbar,
+.biblio2-quote-grid::-webkit-scrollbar {
+  height: 8px;
+}
+
+.biblio2-shelf-row::-webkit-scrollbar-thumb,
+.biblio2-quote-grid::-webkit-scrollbar-thumb {
+  background: rgba(107, 143, 113, 0.25);
+  border-radius: 999px;
+}
+
+.biblio2-card,
+.biblio2-thought-card,
+.biblio2-quote-panel {
+  scroll-snap-align: start;
+}
+
+.biblio2-card {
+  border-radius: 24px;
+  padding: 0 1.4rem 1.4rem;
+  overflow: hidden;
+}
+
+.biblio2-card-image {
+  height: 210px;
+  margin: 0 -1.4rem 1rem;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(238, 229, 216, 0.85);
+}
+
+.biblio2-card-image img {
+  transition: transform 0.45s ease;
+}
+
+.biblio2-card:hover .biblio2-card-image img {
+  transform: scale(1.05);
+}
+
+.biblio2-card-top,
+.biblio2-card-footer,
+.biblio2-card-meta,
+.biblio2-filter-row,
+.biblio2-mood-row,
+.biblio2-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.biblio2-card-top,
+.biblio2-card-footer,
+.biblio2-controls {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.biblio2-card h3 {
+  margin: 12px 0 6px;
+  font-size: 1.3rem;
+  line-height: 1.3;
+}
+
+.biblio2-card h4 {
+  margin: 0 0 10px;
+  color: var(--b2-ink-soft);
+  font-weight: 500;
+}
+
+.biblio2-card-meta,
+.biblio2-mood-row,
+.biblio2-filter-row {
+  flex-wrap: wrap;
+}
+
+.biblio2-card-meta {
+  margin-top: 14px;
+  justify-content: flex-start;
+  font-size: 0.84rem;
+}
+
+.biblio2-card-meta span::after {
+  content: '/';
+  margin-left: 10px;
+}
+
+.biblio2-card-meta span:last-child::after {
+  content: '';
+  margin: 0;
+}
+
+.biblio2-mood-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: #f4efe7;
+  color: #80654b;
+  font-size: 0.75rem;
+}
+
+.biblio2-card-footer {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(238, 229, 216, 0.85);
+}
+
+.biblio2-save,
+.biblio2-link-btn {
+  border: none;
+  background: none;
+}
+
+.biblio2-save {
+  color: #d1c5b9;
+}
+
+.biblio2-save.saved {
+  color: #e07b7b;
+}
+
+.biblio2-link-btn {
+  color: var(--b2-sage);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.biblio2-thought-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.biblio2-thought-card {
+  min-height: 340px;
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+.biblio2-thought-overlay {
+  background: linear-gradient(180deg, rgba(18, 28, 22, 0.12), rgba(18, 28, 22, 0.78));
+}
+
+.biblio2-thought-content,
+.biblio2-quote-copy {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 1.7rem;
+  color: #fffaf1;
+}
+
+.biblio2-thought-content h3 {
+  margin: 12px 0 10px;
+  font-size: 2rem;
+}
+
+.biblio2-thought-quote {
+  margin: 0;
+  font-size: 1.04rem;
+  line-height: 1.8;
+}
+
+.biblio2-quote-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(280px, 320px);
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-snap-type: x proximity;
+}
+
+.biblio2-quote-panel {
+  min-height: 280px;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.biblio2-quote-overlay {
+  background: linear-gradient(180deg, rgba(20, 32, 24, 0.06), rgba(20, 32, 24, 0.75));
+}
+
+.biblio2-quote-copy p {
+  margin: 0 0 12px;
+  font-size: 1rem;
+}
+
+.biblio2-quote-copy span {
+  font-size: 0.84rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 250, 241, 0.82);
+}
+
+.biblio2-controls {
+  margin: 2rem 0 1rem;
+  flex-wrap: wrap;
+}
+
+.biblio2-filter-pill.active {
+  background: var(--b2-sage);
+  border-color: var(--b2-sage);
+  color: white;
+}
+
+.biblio2-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.biblio2-empty {
+  grid-column: 1 / -1;
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--b2-ink-soft);
+}
+
+@media (max-width: 1080px) {
+  .biblio2-header,
+  .biblio2-featured-card,
+  .biblio2-thought-grid,
+  .biblio2-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .biblio2-overview {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .biblio2-header {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.2rem;
+  }
+
+  .biblio2-search {
+    width: 100%;
+  }
+
+  .biblio2-main {
+    padding: 1.4rem 1.2rem 3rem;
+  }
+
+  .biblio2-featured-copy {
+    padding: 1.7rem;
+  }
+
+  .biblio2-featured-copy h2,
+  .biblio2-thought-content h3 {
+    font-size: 2rem;
+  }
+
+  .biblio2-overview {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .biblio2-shelf-row,
+  .biblio2-quote-grid {
+    grid-auto-columns: minmax(270px, 290px);
+  }
+
+  .biblio2-grid {
+    grid-template-columns: 1fr;
+  }
+}

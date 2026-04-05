@@ -1,0 +1,288 @@
+.quizzes-root { animation: contentIn 0.5s ease; }
+
+.quizzes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.quiz-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  border: none;
+  width: 100%;
+  font-family: var(--er-font-body);
+  animation: cardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.quiz-card-icon {
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 12px;
+  font-size: 22px;
+}
+
+.quiz-card-title {
+  font-family: var(--er-font-display);
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--er-text);
+  line-height: 1.2;
+}
+
+.quiz-card-desc {
+  font-size: 13px;
+  color: var(--er-text-muted);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.quiz-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid var(--er-border);
+  margin-top: auto;
+}
+
+.quiz-duration { font-size: 12px; color: var(--er-text-muted); }
+.quiz-cta { font-size: 13px; font-weight: 500; transition: letter-spacing 0.3s; }
+.quiz-card:hover .quiz-cta { letter-spacing: 0.05em; }
+
+/* Quiz runner */
+.qr-root { max-width: 600px; margin: 0 auto; }
+
+.qr-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.qr-icon {
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--qr-glow);
+  border-radius: 12px;
+  font-size: 20px;
+  color: var(--qr-color);
+  flex-shrink: 0;
+}
+
+.qr-title {
+  font-family: var(--er-font-display);
+  font-size: 24px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--er-text);
+}
+
+.qr-progress-wrap {
+  background: var(--er-surface);
+  border: 1px solid var(--er-border);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 28px;
+}
+
+.qr-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--er-text-muted);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.qr-progress-track {
+  height: 5px;
+  background: var(--er-surface-3);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.qr-progress-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.qr-question--enter { animation: stepEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.qr-question--exit { animation: stepExit 0.25s ease; }
+
+.qr-q-text {
+  font-family: var(--er-font-display);
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--er-text);
+  line-height: 1.4;
+  margin-bottom: 24px;
+}
+
+.qr-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.qr-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--er-surface);
+  border: 1px solid var(--er-border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: left;
+  font-family: var(--er-font-body);
+  width: 100%;
+}
+
+.qr-option:hover:not(:disabled) {
+  border-color: var(--qr-color);
+  background: var(--er-surface-2);
+  transform: translateX(4px);
+}
+
+.qr-option--selected {
+  border-color: var(--qr-color) !important;
+  background: var(--er-surface-2) !important;
+}
+
+.qr-option:disabled { cursor: default; opacity: 0.7; }
+
+.qr-option-bullet {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--er-surface-3);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--er-text-muted);
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.qr-option--selected .qr-option-bullet {
+  background: var(--qr-color);
+  color: #0e0f14;
+}
+
+.qr-option-text {
+  font-size: 14px;
+  color: var(--er-text-soft);
+  flex: 1;
+  line-height: 1.4;
+  transition: color 0.3s;
+}
+.qr-option--selected .qr-option-text { color: var(--er-text); }
+
+.qr-option-check {
+  color: var(--qr-color);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Quiz result */
+.qres-root { max-width: 600px; margin: 0 auto; }
+
+.qres-hero {
+  position: relative;
+  background: var(--er-surface);
+  border: 1px solid var(--er-border);
+  border-radius: var(--er-radius-lg);
+  padding: 40px 32px;
+  text-align: center;
+  overflow: hidden;
+  margin-bottom: 20px;
+  animation: completeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.qres-hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center top, var(--qr-glow), transparent 60%);
+  pointer-events: none;
+}
+
+.qres-icon {
+  font-size: 44px;
+  color: var(--qr-color);
+  margin-bottom: 16px;
+  display: block;
+  position: relative;
+  z-index: 1;
+  animation: heroIconFloat 3s ease-in-out infinite;
+}
+
+.qres-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--er-text-muted);
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.qres-type {
+  font-family: var(--er-font-display);
+  font-size: 30px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--er-text);
+  position: relative;
+  z-index: 1;
+}
+
+.qres-desc-card {
+  background: var(--er-surface);
+  border: 1px solid var(--er-border);
+  border-radius: var(--er-radius);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.qres-desc {
+  font-size: 15px;
+  color: var(--er-text-soft);
+  line-height: 1.8;
+}
+
+.qres-tip {
+  background: var(--er-surface);
+  border: 1px solid var(--er-border);
+  border-left: 3px solid var(--qr-color);
+  border-radius: 0 var(--er-radius) var(--er-radius) 0;
+  padding: 18px 22px;
+  margin-bottom: 24px;
+}
+
+.qres-tip-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.qres-tip-text {
+  font-size: 13px;
+  color: var(--er-text-muted);
+  line-height: 1.7;
+}
+
+.qres-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .qr-q-text { font-size: 18px; }
+  .qres-type { font-size: 24px; }
+}
