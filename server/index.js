@@ -305,6 +305,123 @@ app.get('/api/admin/activity', async (req, res) => {
 });
 
 // ==========================================
+// ADMIN USER MANAGEMENT ROUTES
+// ==========================================
+
+app.get('/api/admin/users', async (req, res) => {
+    try {
+        const email = req.query.email;
+
+        if (!(await isAdminRequest(email))) {
+            return res.status(403).json({ status: "Error", msg: "Admin access required" });
+        }
+
+        const users = await UserModel.find({ role: { $ne: 'admin' } })
+            .select('-password') // Exclude password from response
+            .sort({ joinedDate: -1 });
+        res.json({ status: "Success", users });
+    } catch (err) {
+        res.json({ status: "Error", msg: err.message });
+    }
+});
+
+app.post('/api/admin/users', async (req, res) => {
+    try {
+        const email = req.query.email;
+
+        if (!(await isAdminRequest(email))) {
+            return res.status(403).json({ status: "Error", msg: "Admin access required" });
+        }
+
+        const { fullName, email: userEmail, password, role, profession, phone, dob, age, country, state, city } = req.body;
+
+        if (!fullName || !userEmail || !password) {
+            return res.json({ status: "Error", msg: "Full name, email, and password are required" });
+        }
+
+        const existingUser = await UserModel.findOne({ email: userEmail });
+        if (existingUser) {
+            return res.json({ status: "Error", msg: "Email already exists" });
+        }
+
+        const newUser = await UserModel.create({
+            fullName,
+            email: userEmail,
+            password,
+            role: role || 'user',
+            profession,
+            phone,
+            dob,
+            age,
+            country,
+            state,
+            city
+        });
+
+        res.json({ status: "Success", user: { ...newUser.toObject(), password: undefined } });
+    } catch (err) {
+        res.json({ status: "Error", msg: err.message });
+    }
+});
+
+app.put('/api/admin/users/:id', async (req, res) => {
+    try {
+        const email = req.query.email;
+
+        if (!(await isAdminRequest(email))) {
+            return res.status(403).json({ status: "Error", msg: "Admin access required" });
+        }
+
+        const { id } = req.params;
+        const updates = req.body;
+
+        // Prevent updating password through this route for security
+        delete updates.password;
+        delete updates.email; // Email should not be changed
+
+        const updatedUser = await UserModel.findByIdAndUpdate(id, updates, { new: true }).select('-password');
+
+        if (!updatedUser) {
+            return res.json({ status: "Error", msg: "User not found" });
+        }
+
+        res.json({ status: "Success", user: updatedUser });
+    } catch (err) {
+        res.json({ status: "Error", msg: err.message });
+    }
+});
+
+app.delete('/api/admin/users/:id', async (req, res) => {
+    try {
+        const email = req.query.email;
+
+        if (!(await isAdminRequest(email))) {
+            return res.status(403).json({ status: "Error", msg: "Admin access required" });
+        }
+
+        const { id } = req.params;
+
+        const deletedUser = await UserModel.findByIdAndDelete(id);
+
+        if (!deletedUser) {
+            return res.json({ status: "Error", msg: "User not found" });
+        }
+
+        // Optionally delete associated data
+        await Promise.all([
+            JournalModel.deleteMany({ userEmail: deletedUser.email }),
+            MoodModel.deleteMany({ userEmail: deletedUser.email }),
+            FeedbackModel.deleteMany({ userEmail: deletedUser.email }),
+            LoginEventModel.deleteMany({ userEmail: deletedUser.email })
+        ]);
+
+        res.json({ status: "Success", msg: "User and associated data deleted" });
+    } catch (err) {
+        res.json({ status: "Error", msg: err.message });
+    }
+});
+
+// ==========================================
 // EMOTION REGULATION AI ROUTES
 // ==========================================
 

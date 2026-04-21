@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import './Admin.css';
 
-const tabs = ['Overview', 'User Activity', 'Feedback'];
+const tabs = ['Overview', 'User Activity', 'Users', 'Feedback'];
 
 const moodLabelMap = {
   '🌿': 'Calm',
@@ -37,6 +37,24 @@ const Admin = () => {
   const [overview, setOverview] = useState(null);
   const [feedbackList, setFeedbackList] = useState([]);
   const [activityList, setActivityList] = useState([]);
+  const [usersList, setUsersList] = useState([]);
+  const [editingUser, setEditingUser] = useState(null);
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    role: 'user',
+    profession: '',
+    phone: '',
+    dob: '',
+    age: '',
+    country: '',
+    state: '',
+    city: ''
+  });
   const [state, setState] = useState({ loading: true, error: '', refreshing: false });
 
   const fetchAdminData = useCallback(async (mode = 'initial') => {
@@ -92,9 +110,154 @@ const Admin = () => {
     }
   }, [navigate, user]);
 
+  const fetchUsers = useCallback(async () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    if (user.role !== 'admin') {
+      return;
+    }
+
+    try {
+      const query = `email=${encodeURIComponent(user.email)}`;
+      const res = await fetch(`http://localhost:5000/api/admin/users?${query}`);
+      const data = await res.json();
+
+      if (data.status !== 'Success') {
+        throw new Error(data.msg || 'Unable to load users.');
+      }
+
+      setUsersList(data.users);
+    } catch (error) {
+      console.error('Failed to fetch users:', error);
+    }
+  }, [navigate, user]);
+
+  const createUser = useCallback(async (userData) => {
+    try {
+      const query = `email=${encodeURIComponent(user.email)}`;
+      const res = await fetch(`http://localhost:5000/api/admin/users?${query}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+      });
+      const data = await res.json();
+
+      if (data.status !== 'Success') {
+        throw new Error(data.msg || 'Failed to create user.');
+      }
+
+      setUsersList(prev => [data.user, ...prev]);
+      setShowCreateForm(false);
+    } catch (error) {
+      alert('Error creating user: ' + error.message);
+    }
+  }, [user]);
+
+  const updateUser = useCallback(async (id, userData) => {
+    try {
+      const query = `email=${encodeURIComponent(user.email)}`;
+      const res = await fetch(`http://localhost:5000/api/admin/users/${id}?${query}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+      });
+      const data = await res.json();
+
+      if (data.status !== 'Success') {
+        throw new Error(data.msg || 'Failed to update user.');
+      }
+
+      setUsersList(prev => prev.map(u => u._id === id ? data.user : u));
+      setShowEditForm(false);
+      setEditingUser(null);
+    } catch (error) {
+      alert('Error updating user: ' + error.message);
+    }
+  }, [user]);
+
+  const deleteUser = useCallback(async (id) => {
+    setDeleteConfirmId(id);
+  }, []);
+
+  const confirmDeleteUser = useCallback(async () => {
+    const id = deleteConfirmId;
+    if (!id) return;
+
+    try {
+      const query = `email=${encodeURIComponent(user.email)}`;
+      const res = await fetch(`http://localhost:5000/api/admin/users/${id}?${query}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+
+      if (data.status !== 'Success') {
+        throw new Error(data.msg || 'Failed to delete user.');
+      }
+
+      setUsersList(prev => prev.filter(u => u._id !== id));
+      setDeleteConfirmId(null);
+    } catch (error) {
+      alert('Error deleting user: ' + error.message);
+      setDeleteConfirmId(null);
+    }
+  }, [deleteConfirmId, user]);
+
+  const resetForm = () => {
+    setFormData({
+      fullName: '',
+      email: '',
+      password: '',
+      role: 'user',
+      profession: '',
+      phone: '',
+      dob: '',
+      age: '',
+      country: '',
+      state: '',
+      city: ''
+    });
+  };
+
+  const handleCreateUser = () => {
+    createUser(formData);
+    resetForm();
+  };
+
+  const handleUpdateUser = () => {
+    updateUser(editingUser._id, formData);
+    resetForm();
+  };
+
+  const handleEditUser = (user) => {
+    setFormData({
+      fullName: user.fullName || '',
+      email: user.email || '',
+      password: '', // Don't populate password
+      role: user.role || 'user',
+      profession: user.profession || '',
+      phone: user.phone || '',
+      dob: user.dob || '',
+      age: user.age || '',
+      country: user.country || '',
+      state: user.state || '',
+      city: user.city || ''
+    });
+    setEditingUser(user);
+    setShowEditForm(true);
+  };
+
   useEffect(() => {
     fetchAdminData();
   }, [fetchAdminData]);
+
+  useEffect(() => {
+    if (activeTab === 'Users') {
+      fetchUsers();
+    }
+  }, [activeTab, fetchUsers]);
 
   const formatDate = (value) => {
     if (!value) return 'Not available';
@@ -321,6 +484,72 @@ const Admin = () => {
           </section>
         )}
 
+        {activeTab === 'Users' && (
+          <section className="admin-content-stack">
+            <article className="admin-panel-card">
+              <div className="admin-panel-head">
+                <h2>User Management</h2>
+                <span>{usersList.length} users</span>
+                <button
+                  type="button"
+                  className="admin-primary-btn"
+                  onClick={() => setShowCreateForm(true)}
+                  style={{ marginLeft: 'auto' }}
+                >
+                  Create User
+                </button>
+              </div>
+
+              <div className="admin-table-wrap">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Profession</th>
+                      <th>Joined</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {usersList.map((user) => (
+                      <tr key={user._id}>
+                        <td>
+                          <div className="admin-user-cell">
+                            <strong>{user.fullName}</strong>
+                          </div>
+                        </td>
+                        <td>{user.email}</td>
+                        <td>{user.role}</td>
+                        <td>{user.profession || 'N/A'}</td>
+                        <td>{formatDate(user.joinedDate)}</td>
+                        <td>
+                          <button
+                            type="button"
+                            className="admin-secondary-btn"
+                            onClick={() => handleEditUser(user)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            className="admin-danger-btn"
+                            onClick={() => deleteUser(user._id)}
+                            style={{ marginLeft: '8px' }}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+        )}
+
         {activeTab === 'Feedback' && (
           <section className="admin-content-stack">
             <article className="admin-panel-card">
@@ -356,6 +585,242 @@ const Admin = () => {
           </section>
         )}
       </div>
+
+      {/* Create User Modal */}
+      {showCreateForm && (
+        <div className="admin-modal-overlay" onClick={() => setShowCreateForm(false)}>
+          <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="admin-modal-header">
+              <h3>Create New User</h3>
+              <button type="button" onClick={() => setShowCreateForm(false)}>×</button>
+            </div>
+            <div className="admin-modal-body">
+              <form onSubmit={(e) => { e.preventDefault(); handleCreateUser(); }}>
+                <div className="admin-form-row">
+                  <label>Full Name *</label>
+                  <input
+                    type="text"
+                    value={formData.fullName}
+                    onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>Email *</label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>Password *</label>
+                  <input
+                    type="password"
+                    value={formData.password}
+                    onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>Role</label>
+                  <select
+                    value={formData.role}
+                    onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
+                  >
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+                <div className="admin-form-row">
+                  <label>Profession</label>
+                  <input
+                    type="text"
+                    value={formData.profession}
+                    onChange={(e) => setFormData(prev => ({ ...prev, profession: e.target.value }))}
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>Phone</label>
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>Date of Birth</label>
+                  <input
+                    type="date"
+                    value={formData.dob}
+                    onChange={(e) => setFormData(prev => ({ ...prev, dob: e.target.value }))}
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>Age</label>
+                  <input
+                    type="number"
+                    value={formData.age}
+                    onChange={(e) => setFormData(prev => ({ ...prev, age: e.target.value }))}
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>Country</label>
+                  <input
+                    type="text"
+                    value={formData.country}
+                    onChange={(e) => setFormData(prev => ({ ...prev, country: e.target.value }))}
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>State</label>
+                  <input
+                    type="text"
+                    value={formData.state}
+                    onChange={(e) => setFormData(prev => ({ ...prev, state: e.target.value }))}
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>City</label>
+                  <input
+                    type="text"
+                    value={formData.city}
+                    onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))}
+                  />
+                </div>
+                <div className="admin-modal-actions">
+                  <button type="button" onClick={() => setShowCreateForm(false)}>Cancel</button>
+                  <button type="submit" className="admin-primary-btn">Create User</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit User Modal */}
+      {showEditForm && editingUser && (
+        <div className="admin-modal-overlay" onClick={() => setShowEditForm(false)}>
+          <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="admin-modal-header">
+              <h3>Edit User</h3>
+              <button type="button" onClick={() => setShowEditForm(false)}>×</button>
+            </div>
+            <div className="admin-modal-body">
+              <form onSubmit={(e) => { e.preventDefault(); handleUpdateUser(); }}>
+                <div className="admin-form-row">
+                  <label>Full Name *</label>
+                  <input
+                    type="text"
+                    value={formData.fullName}
+                    onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    disabled
+                  />
+                  <small>Email cannot be changed</small>
+                </div>
+                <div className="admin-form-row">
+                  <label>Role</label>
+                  <select
+                    value={formData.role}
+                    onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
+                  >
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+                <div className="admin-form-row">
+                  <label>Profession</label>
+                  <input
+                    type="text"
+                    value={formData.profession}
+                    onChange={(e) => setFormData(prev => ({ ...prev, profession: e.target.value }))}
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>Phone</label>
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>Date of Birth</label>
+                  <input
+                    type="date"
+                    value={formData.dob}
+                    onChange={(e) => setFormData(prev => ({ ...prev, dob: e.target.value }))}
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>Age</label>
+                  <input
+                    type="number"
+                    value={formData.age}
+                    onChange={(e) => setFormData(prev => ({ ...prev, age: e.target.value }))}
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>Country</label>
+                  <input
+                    type="text"
+                    value={formData.country}
+                    onChange={(e) => setFormData(prev => ({ ...prev, country: e.target.value }))}
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>State</label>
+                  <input
+                    type="text"
+                    value={formData.state}
+                    onChange={(e) => setFormData(prev => ({ ...prev, state: e.target.value }))}
+                  />
+                </div>
+                <div className="admin-form-row">
+                  <label>City</label>
+                  <input
+                    type="text"
+                    value={formData.city}
+                    onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))}
+                  />
+                </div>
+                <div className="admin-modal-actions">
+                  <button type="button" onClick={() => setShowEditForm(false)}>Cancel</button>
+                  <button type="submit" className="admin-primary-btn">Update User</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirmId && (
+        <div className="admin-modal-overlay" onClick={() => setDeleteConfirmId(null)}>
+          <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="admin-modal-header">
+              <h3>Confirm Deletion</h3>
+              <button type="button" onClick={() => setDeleteConfirmId(null)}>×</button>
+            </div>
+            <div className="admin-modal-body">
+              <p>Are you sure you want to delete this user? This action cannot be undone and will also delete all associated data including journals, mood logs, and feedback.</p>
+              <div className="admin-modal-actions">
+                <button type="button" onClick={() => setDeleteConfirmId(null)}>Cancel</button>
+                <button type="button" className="admin-danger-btn" onClick={confirmDeleteUser}>Delete User</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

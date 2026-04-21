@@ -507,3 +507,126 @@
     min-width: 140px;
   }
 }
+
+/* Modal Styles */
+.admin-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.admin-modal {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.15);
+}
+
+.admin-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.admin-modal-header h3 {
+  margin: 0;
+  color: #2f4f4f;
+  font-size: 1.2rem;
+}
+
+.admin-modal-header button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.admin-modal-body {
+  padding: 24px;
+}
+
+.admin-form-row {
+  margin-bottom: 16px;
+}
+
+.admin-form-row label {
+  display: block;
+  margin-bottom: 4px;
+  color: #2f4f4f;
+  font-weight: 600;
+}
+
+.admin-form-row input,
+.admin-form-row select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.admin-form-row input:disabled {
+  background: rgba(200, 200, 200, 0.5);
+  cursor: not-allowed;
+}
+
+.admin-form-row small {
+  display: block;
+  margin-top: 4px;
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.admin-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.admin-modal-actions button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.admin-modal-actions button:first-child {
+  background: rgba(0, 0, 0, 0.1);
+  color: #666;
+}
+
+.admin-secondary-btn {
+  background: rgba(47, 79, 79, 0.1);
+  color: #2f4f4f;
+  border: 1px solid rgba(47, 79, 79, 0.2);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.admin-danger-btn {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.2);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}

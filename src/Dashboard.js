@@ -209,7 +209,7 @@ const Dashboard = () => {
           <div className="help-box">
             <HeartPulse size={20} className="help-icon" />
             <p>Need a moment?</p>
-            <button onClick={() => navigate('/emotion-regulation')}>Breathe Now</button>
+            <button onClick={() => navigate('/regulation')}>Breathe Now</button>
           </div>
           <button className="menu-item return-home" onClick={() => navigate('/')}>
             <Home size={18} /> Go to Homepage
@@ -314,7 +314,7 @@ const Dashboard = () => {
                 <div className="card-info"><h3>Bibliotherapy</h3><p>Curated reading for soul healing.</p></div>
                 <div className="card-arrow"><ArrowRight size={20} /></div>
               </div>
-              <div className="action-card" onClick={() => navigate('/emotion-regulation')}>
+              <div className="action-card" onClick={() => navigate('/regulation')}>
                 <div className="card-icon-wrapper emotion-theme"><Wind size={28} /></div>
                 <div className="card-info"><h3>Emotion Regulation</h3><p>Breathing exercises and positivity builders.</p></div>
                 <div className="card-arrow"><ArrowRight size={20} /></div>

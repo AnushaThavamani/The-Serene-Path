@@ -188,16 +188,18 @@ const GENRE_META = {
 };
 
 const TYPE_ICON = { video: '▶', audio: '🎧', playlist: '≡' };
+const BREATH_PHASES = [
+  { label: 'Inhale', duration: 4, color: '#7a9e87' },
+  { label: 'Hold', duration: 7, color: '#8b7aad' },
+  { label: 'Exhale', duration: 8, color: '#5a7eb5' },
+];
+const MORNING_MEDITATION_BACKDROP =
+  'https://images.unsplash.com/photo-1760693403379-cad815a0a3c3?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&q=60&w=3000';
 
 // ── Breathwork Timer Component ────────────────────────────────────────────────
 const BreathTimer = ({ onClose }) => {
-  const phases = [
-    { label: 'Inhale',    duration: 4,  color: '#7a9e87' },
-    { label: 'Hold',      duration: 7,  color: '#8b7aad' },
-    { label: 'Exhale',    duration: 8,  color: '#5a7eb5' },
-  ];
   const [phaseIdx, setPhaseIdx] = useState(0);
-  const [count, setCount]       = useState(phases[0].duration);
+  const [count, setCount]       = useState(BREATH_PHASES[0].duration);
   const [running, setRunning]   = useState(false);
   const [cycles, setCycles]     = useState(0);
   const timerRef = useRef(null);
@@ -208,11 +210,11 @@ const BreathTimer = ({ onClose }) => {
       setCount(c => {
         if (c <= 1) {
           setPhaseIdx(p => {
-            const next = (p + 1) % phases.length;
+            const next = (p + 1) % BREATH_PHASES.length;
             if (next === 0) setCycles(cy => cy + 1);
             return next;
           });
-          return phases[(phaseIdx + 1) % phases.length].duration;
+          return BREATH_PHASES[(phaseIdx + 1) % BREATH_PHASES.length].duration;
         }
         return c - 1;
       });
@@ -221,8 +223,8 @@ const BreathTimer = ({ onClose }) => {
   }, [running, phaseIdx]);
 
   const toggle = () => { setRunning(r => !r); };
-  const reset  = () => { setRunning(false); setPhaseIdx(0); setCount(phases[0].duration); setCycles(0); };
-  const phase  = phases[phaseIdx];
+  const reset  = () => { setRunning(false); setPhaseIdx(0); setCount(BREATH_PHASES[0].duration); setCycles(0); };
+  const phase  = BREATH_PHASES[phaseIdx];
   const progress = ((phase.duration - count) / phase.duration) * 100;
 
   return (
@@ -250,7 +252,7 @@ const BreathTimer = ({ onClose }) => {
         </div>
 
         <div className="breath-phases-row">
-          {phases.map((p, i) => (
+          {BREATH_PHASES.map((p, i) => (
             <div key={p.label} className={`breath-phase-pill ${i === phaseIdx ? 'active' : ''}`}
               style={{ '--pc': p.color }}>
               <span>{p.label}</span>
@@ -298,15 +300,29 @@ const Sanctuary = () => {
     return genreMatch && typeMatch && favMatch && search;
   });
 
+  const heroStats = [
+    { label: 'Curated sessions', value: MEDIA.length },
+    { label: 'Genres', value: GENRES.length - 1 },
+    { label: 'Saved favourites', value: favorites.length },
+  ];
+
   const getEmbedUrl = (item) => {
     if (item.isPlaylist) return `https://www.youtube.com/embed/videoseries?list=${item.youtubeId}&autoplay=1`;
     return `https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&rel=0`;
   };
 
   const featured = MEDIA.filter(m => [12, 1, 5, 18, 9, 22].includes(m.id));
+  const spotlight = filtered[0] || featured[0];
+  const heroBackdrop = MEDIA.find((m) => m.id === 18)?.thumb || featured[0]?.thumb;
+  const panelBackdrop = MEDIA.find((m) => m.id === 21)?.thumb || featured[1]?.thumb;
+  const rootStyle = {
+    '--san-hero-image': `url(${heroBackdrop})`,
+    '--san-panel-image': `url(${panelBackdrop})`,
+    '--san-spotlight-image': `url(${MORNING_MEDITATION_BACKDROP})`,
+  };
 
   return (
-    <div className="san-root">
+    <div className="san-root" style={rootStyle}>
       {/* Ambient background orbs */}
       <div className="san-bg">
         <div className="san-orb san-orb-1" />
@@ -365,8 +381,26 @@ const Sanctuary = () => {
             <button className="san-cta-primary" onClick={() => setPlaying(MEDIA[11])}>▶ Begin Today's Session</button>
             <button className="san-cta-ghost"   onClick={() => setShowBreath(true)}>🌬️ Breathwork Timer</button>
           </div>
+          <div className="san-hero-stats">
+            {heroStats.map((stat) => (
+              <div key={stat.label} className="san-hero-stat">
+                <strong>{stat.value}</strong>
+                <span>{stat.label}</span>
+              </div>
+            ))}
+          </div>
         </motion.div>
-        <div className="san-hero-cards">
+        <div className="san-hero-visual">
+          <div className="san-hero-panel">
+            <p className="san-hero-panel-kicker">Tonight's atmosphere</p>
+            <h3>Forest air, slower breath, and one gentle session to settle the whole nervous system.</h3>
+            <div className="san-hero-panel-tags">
+              <span>Forest calm</span>
+              <span>Ocean quiet</span>
+              <span>Grounded reset</span>
+            </div>
+          </div>
+          <div className="san-hero-cards">
           {featured.slice(0,3).map((m, i) => (
             <motion.div key={m.id} className="san-hero-card" style={{ animationDelay: `${i * 0.15}s` }}
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.15 }}
@@ -378,6 +412,7 @@ const Sanctuary = () => {
               </div>
             </motion.div>
           ))}
+        </div>
         </div>
       </header>
 
@@ -418,6 +453,35 @@ const Sanctuary = () => {
       </section>
 
       {/* ── MEDIA GRID ── */}
+      {spotlight && (
+        <section className="san-spotlight-section">
+          <motion.div className="san-spotlight-card" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="san-spotlight-copy">
+              <p className="san-spotlight-kicker">Featured for this moment</p>
+              <h2>{spotlight.title}</h2>
+              <p className="san-spotlight-desc">{spotlight.description}</p>
+              <div className="san-spotlight-meta">
+                <span>{GENRE_META[spotlight.genre].icon} {spotlight.genre}</span>
+                <span>{spotlight.duration}</span>
+                <span>{spotlight.type}</span>
+              </div>
+              <div className="san-spotlight-actions">
+                <button className="san-cta-primary" onClick={() => setPlaying(spotlight)}>
+                  {spotlight.type === 'playlist' ? 'Open Playlist' : spotlight.type === 'audio' ? 'Listen Now' : 'Play Now'}
+                </button>
+                <button className="san-cta-ghost" onClick={() => toggleFav(spotlight.id)}>
+                  {favorites.includes(spotlight.id) ? 'Saved to Favourites' : 'Save to Favourites'}
+                </button>
+              </div>
+            </div>
+            <button className="san-spotlight-thumb" onClick={() => setPlaying(spotlight)}>
+              <img src={spotlight.thumb} alt={spotlight.title} loading="lazy" />
+              <span>{TYPE_ICON[spotlight.type]}</span>
+            </button>
+          </motion.div>
+        </section>
+      )}
+
       <section className="san-grid-section">
         <div className="san-section-header">
           <h2 className="san-section-title">
@@ -445,13 +509,18 @@ const Sanctuary = () => {
                   {/* Thumbnail */}
                   <div className="san-card-thumb" onClick={() => setPlaying(item)}>
                     <img src={item.thumb} alt={item.title} loading="lazy" />
+                    <div className="san-card-topline">
+                      <div className="san-card-type-badge" style={{ '--gc': GENRE_META[item.genre].color }}>
+                        {item.type}
+                      </div>
+                      <div className="san-card-duration">{item.duration}</div>
+                    </div>
                     <div className="san-card-overlay">
-                      <div className="san-play-btn">{TYPE_ICON[item.type]}</div>
+                      <div className="san-card-overlay-copy">
+                        <span>{GENRE_META[item.genre].icon} {item.genre}</span>
+                        <div className="san-play-btn">{TYPE_ICON[item.type]}</div>
+                      </div>
                     </div>
-                    <div className="san-card-type-badge" style={{ '--gc': GENRE_META[item.genre].color }}>
-                      {item.type}
-                    </div>
-                    <div className="san-card-duration">{item.duration}</div>
                   </div>
 
                   {/* Info */}
@@ -461,6 +530,10 @@ const Sanctuary = () => {
                     </div>
                     <h3 className="san-card-title" onClick={() => setPlaying(item)}>{item.title}</h3>
                     <p className="san-card-desc">{item.description}</p>
+                    <div className="san-card-meta-row">
+                      <span>{item.type === 'playlist' ? 'Curated flow' : item.type === 'audio' ? 'Audio sanctuary' : 'Guided session'}</span>
+                      <span>{item.duration}</span>
+                    </div>
                     <div className="san-card-footer">
                       <button className="san-play-text-btn" onClick={() => setPlaying(item)}>
                         {item.type === 'playlist' ? '≡ Open Playlist' : item.type === 'audio' ? '🎧 Listen' : '▶ Watch'}
