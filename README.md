@@ -115,5 +115,3 @@ Visit [http://localhost:3000](http://localhost:3000)
 
 > *"Your mental health is a priority. Your happiness is essential. Your self-care is a necessity."*
 ---
-
-## Project Structure
