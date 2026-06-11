@@ -1,70 +1,117 @@
-# Getting Started with Create React App
+# 🌿 The Serene Path
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> A full-stack mental wellness web application built with the MERN Stack.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Overview
 
-### `npm start`
+**The Serene Path** is a secure, user-centered wellness platform designed to promote mental well-being through self-reflection, emotional awareness, and curated mindfulness resources. The application prioritizes user privacy with end-to-end encryption on sensitive data.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+| Module | Description |
+|---|---|
+| 🔐 Authentication | Secure user registration and login using JWT-based auth |
+| 📔 Journal | Private journaling with AES-256 encryption |
+| 📊 Dashboard | Personalized mood and activity analytics with visual charts |
+| 🧘 Emotion Regulation | Evidence-based tools and techniques for emotional management |
+| 📚 Bibliotherapy | Curated reading recommendations for mental wellness |
+| 🎵 Multimedia Sanctuary | Calming audio and visual content for relaxation |
+| 💬 Feedback | In-app user feedback and rating system |
+| 🛠️ Admin Panel | Administrative control for managing users and content |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Tech Stack
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Layer | Technology |
+|---|---|
+| Frontend | React.js v19, Framer Motion, Recharts, CSS3 |
+| Backend | Node.js, Express.js |
+| Database | MongoDB Atlas |
+| Security | JWT Authentication, AES-256 Encryption |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The-Serene-Path/
+├── public/          # Static assets
+├── src/             # React frontend source
+│   ├── components/  # Reusable UI components
+│   ├── pages/       # Application pages
+│   └── App.js       # Root component
+├── server/          # Node.js + Express backend
+│   ├── routes/      # API routes
+│   ├── models/      # MongoDB schemas
+│   └── index.js     # Server entry point
+├── package.json
+└── README.md
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Getting Started
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Prerequisites
+- Node.js v18+
+- MongoDB Atlas account
+- npm or yarn
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Installation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**1. Clone the repository**
+```bash
+git clone https://github.com/AnushaThavamani/The-Serene-Path.git
+cd The-Serene-Path
+```
 
-## Learn More
+**2. Install frontend dependencies**
+```bash
+npm install
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**3. Install backend dependencies**
+```bash
+cd server
+npm install
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**4. Configure environment variables**
 
-### Code Splitting
+Create a `.env` file inside the `server/` folder:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+ENCRYPTION_KEY=your_aes_key
 
-### Analyzing the Bundle Size
+**5. Run the application**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Frontend:
+```bash
+npm start
+```
 
-### Making a Progressive Web App
+Backend:
+```bash
+cd server
+node index.js
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Visit [http://localhost:3000](http://localhost:3000)
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Security
 
-### Deployment
+- All journal entries are encrypted using **AES-256** before storage
+- Passwords are hashed and never stored in plain text
+- Authentication is handled via **JWT tokens** with expiry
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## Developer
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Anusha Thavamani**  
+
+> *"Your mental health is a priority. Your happiness is essential. Your self-care is a necessity."*
+---
